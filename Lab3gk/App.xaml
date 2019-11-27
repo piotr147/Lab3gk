@@ -1,0 +1,12 @@
+﻿<Application x:Class="Lab3gk.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Lab3gk"
+             StartupUri="MainWindow.xaml"
+             xmlns:viewModel="clr-namespace:Lab3gk.ViewModel">
+    <Application.Resources>
+        <ResourceDictionary>
+            <viewModel:MainViewModel x:Key="Main"></viewModel:MainViewModel>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

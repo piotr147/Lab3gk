@@ -41,7 +41,7 @@
                     <ComboBoxItem>Lab</ComboBoxItem>
                     <ComboBoxItem>RGB</ComboBoxItem>
                 </ComboBox>
-                <Button Content="Apply" Command="{Binding ApplyCommand}" ></Button>
+                <Button Content="Apply" Command="{Binding ApplyAsync}" ></Button>
             </StackPanel>
             
             

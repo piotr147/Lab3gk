@@ -22,6 +22,7 @@ namespace Lab3gk.ViewModel
         public int SelectedMode{ get; set; }
         public RelayCommand LoadBaseImage2Command { get; set; }
         public RelayCommand ApplyCommand { get; set; }
+        public AsyncCommand ApplyAsync { get; set; }
         //public BitmapImage BaseImage2 { get; set; }
         public WriteableBitmap BaseImage
         {
@@ -53,6 +54,7 @@ namespace Lab3gk.ViewModel
         }
 
         public (byte r, byte g, byte b)[,] Pixels { get; set; }
+        public bool IsBusy { get; private set; }
 
         public MainViewModel()
         {
@@ -62,6 +64,43 @@ namespace Lab3gk.ViewModel
 
             LoadBaseImage2Command = new RelayCommand(LoadBaseImage2);
             ApplyCommand = new RelayCommand(Apply);
+            ApplyAsync = new AsyncCommand(ApplyAsyncFunc, () => !IsBusy);
+        }
+
+        private async Task ApplyAsyncFunc()
+        {
+            try
+            {
+                IsBusy = true;
+
+
+                if (SelectedMode == 0)
+                {
+                    await YCbCr();
+                }
+                else if (SelectedMode == 1)
+                {
+                    HSV();
+                }
+
+
+                //int result = await xd;
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+
+
+            //if (SelectedMode == 0)
+            //{
+            //    await YCbCr();
+            //}
+            //else if (SelectedMode == 1)
+            //{
+            //    HSV();
+            //}
         }
 
         private void Apply()
@@ -87,7 +126,7 @@ namespace Lab3gk.ViewModel
             }
         }
 
-        private void YCbCr()
+        private async Task YCbCr()
         {
             var kb = 0.114;
             var kr = 0.299;

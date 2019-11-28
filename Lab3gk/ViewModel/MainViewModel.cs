@@ -80,7 +80,7 @@ namespace Lab3gk.ViewModel
                 }
                 else if (SelectedMode == 1)
                 {
-                    HSV();
+                    await HSV();
                 }
 
 
@@ -115,15 +115,71 @@ namespace Lab3gk.ViewModel
             }
         }
 
-        private void HSV()
+        private async Task HSV()
         {
+            var Pixels1 = new (byte r, byte g, byte b)[Pixels.GetLength(0), Pixels.GetLength(1)];
+            var Pixels2 = new (byte r, byte g, byte b)[Pixels.GetLength(0), Pixels.GetLength(1)];
+            var Pixels3 = new (byte r, byte g, byte b)[Pixels.GetLength(0), Pixels.GetLength(1)]; 
+
             for (int i = 0; i < Image1.PixelWidth; i++)
             {
                 for (int j = 0; j < Image1.PixelHeight; j++)
                 {
-                    //var col = 
+                    double h = 0;
+                    double s = 0;
+                    double v = 0;
+
+                    var col = Pixels[i, j];
+                    double r = (double)col.r / 255.0;
+                    double g = (double)col.g / 255.0;
+                    double b = (double)col.b / 255.0;
+                    
+                    double Cmax = Math.Max(r, Math.Max(g, b));
+                    double Cmin = Math.Min(Math.Min(r, g), b);
+                    double d = Cmax - Cmin;
+
+                    if (d == 0)
+                    {
+                        h = 0;
+                    }
+                    else if(Cmax == r)
+                    {
+                        h = ((g - b) / d % 6) * 60;
+                    }
+                    else if(Cmax == g)
+                    {
+                        h = ((b - r) / d + 6) * 60;
+                    }
+                    else if (Cmax == b)
+                    {
+                        h = ((r - g) / d + 4) * 60;
+                    }
+
+                    if (h < 0 || h > 255)
+                        h = h;
+
+                    h = h < 0 ? h + 360 : h;
+                    
+                    s = Cmax == 0 ? 0 : d / Cmax;
+
+                    v = Cmax;
+                    s *= 100;
+                    v *= 100;
+                    //s *= 255;
+                    //v *= 255;
+
+                    h = h > 255 ? h / 255 : h;
+                    //h = h / 360 * 255;
+
+                    Pixels1[i, j] = ((byte)(int)h, (byte)(int)h, (byte)(int)h);
+                    Pixels2[i, j] = ((byte)(int)s, (byte)(int)s, (byte)(int)s);
+                    Pixels3[i, j] = ((byte)(int)v, (byte)(int)v, (byte)(int)v);
                 }
             }
+
+            Pixels2Bitmap(Image1, Pixels1);
+            Pixels2Bitmap(Image2, Pixels2);
+            Pixels2Bitmap(Image3, Pixels3);     
         }
 
         private async Task YCbCr()

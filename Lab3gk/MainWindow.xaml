@@ -42,6 +42,104 @@
                     <ComboBoxItem>RGB</ComboBoxItem>
                 </ComboBox>
                 <Button Content="Apply" Command="{Binding ApplyAsync}" ></Button>
+                <Border Margin="10">
+                    <StackPanel>
+                        <DockPanel>
+                            <Label>Predefined Color Profile</Label>
+                            <ComboBox SelectedIndex="{Binding PredCol}">
+                                <ComboBoxItem>sRGB</ComboBoxItem>
+                                <ComboBoxItem>Adobe RGB</ComboBoxItem>
+                                <ComboBoxItem>Apple RGB</ComboBoxItem>
+                                <ComboBoxItem>CIE RGB</ComboBoxItem>
+                                <ComboBoxItem>Wide Gamut</ComboBoxItem>
+                                <ComboBoxItem>PAL/SECAM</ComboBoxItem>
+                                
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding SelectionChangedColCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
+                        </DockPanel>
+                        <DockPanel>
+                            <Label>Predefined Color Profile</Label>
+                            <ComboBox SelectedIndex="{Binding PredIlu}">
+                                <ComboBoxItem>A</ComboBoxItem>
+                                <ComboBoxItem>B</ComboBoxItem>
+                                <ComboBoxItem>C</ComboBoxItem>
+                                <ComboBoxItem>D50</ComboBoxItem>
+                                <ComboBoxItem>D55</ComboBoxItem>
+                                <ComboBoxItem>D65</ComboBoxItem>
+                                <ComboBoxItem>D75</ComboBoxItem>
+                                <ComboBoxItem>9300K</ComboBoxItem>
+                                <ComboBoxItem>E</ComboBoxItem>
+                                <ComboBoxItem>F2</ComboBoxItem>
+                                <ComboBoxItem>F7</ComboBoxItem>
+                                <ComboBoxItem>F11</ComboBoxItem>
+
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding SelectionChangedIluCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
+                        </DockPanel>
+                        
+                        <Label>Red primary</Label>
+                        <DockPanel>
+                            <Label>X: </Label>
+                            <TextBox Text="{Binding Path=RedX, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
+                            <Slider Value="{Binding RedX}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label>Y: </Label>
+                            <TextBox Text="{Binding Path=RedY, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
+                            <Slider Value="{Binding RedY}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
+                        </DockPanel>
+                        
+                        <Label>Green primary</Label>
+                        <DockPanel>
+                            <Label>X: </Label>
+                            <TextBox Text="{Binding Path=GreenX, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
+                            <Slider Value="{Binding GreenX}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label>Y: </Label>
+                            <TextBox Text="{Binding Path=GreenY, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
+                            <Slider Value="{Binding GreenY}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
+                        </DockPanel>
+                        
+                        <Label>Blue primary</Label>
+                        <DockPanel>
+                            <Label>X: </Label>
+                            <TextBox Text="{Binding Path=BlueX, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
+                            <Slider Value="{Binding BlueX}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label>Y: </Label>
+                            <TextBox Text="{Binding Path=BlueY, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
+                            <Slider Value="{Binding BlueY}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
+                        </DockPanel>
+                        
+                        <Label>White point</Label>
+                        <DockPanel>
+                            <Label>X: </Label>
+                            <TextBox Text="{Binding Path=WhiteX, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
+                            <Slider Value="{Binding WhiteX}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
+                        </DockPanel>
+                        <DockPanel>
+                            <Label>Y: </Label>
+                            <TextBox Text="{Binding Path=WhiteY, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
+                            <Slider Value="{Binding WhiteY}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
+                        </DockPanel>
+                        
+                        <DockPanel>
+                            <Label>Gamma: </Label>
+                            <TextBox Text="{Binding Path=Gamma, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
+                            <Slider Value="{Binding Gamma}" Minimum="0" Maximum="3" TickPlacement="BottomRight" TickFrequency="0.01" IsSnapToTickEnabled="True" />
+                        </DockPanel>
+                    </StackPanel>
+                </Border>
             </StackPanel>
             
             

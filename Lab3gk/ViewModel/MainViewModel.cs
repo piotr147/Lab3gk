@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Mime;
 using System.Text;
@@ -11,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
+using Lab3gk.Helpers;
 
 namespace Lab3gk.ViewModel
 {
@@ -50,6 +52,9 @@ namespace Lab3gk.ViewModel
         public AsyncCommand ApplyAsync { get; set; }
         public RelayCommand SelectionChangedColCommand { get; set; }
         public RelayCommand SelectionChangedIluCommand { get; set; }
+        public RelayCommand SaveImage1Command { get; set; }
+        public RelayCommand SaveImage2Command { get; set; }
+        public RelayCommand SaveImage3Command { get; set; }
 
         //public BitmapImage BaseImage2 { get; set; }
         public WriteableBitmap BaseImage
@@ -166,6 +171,27 @@ namespace Lab3gk.ViewModel
             ApplyAsync = new AsyncCommand(ApplyAsyncFunc, () => !IsBusy);
             SelectionChangedColCommand = new RelayCommand(SelectionChangedCol);
             SelectionChangedIluCommand = new RelayCommand(SelectionChangedIlu);
+            SaveImage1Command = new RelayCommand(() => SaveImage(Image1));
+            SaveImage2Command = new RelayCommand(() => SaveImage(Image2));
+            SaveImage3Command = new RelayCommand(() => SaveImage(Image3));
+        }
+
+        private void SaveImage(WriteableBitmap imageBitmap)
+        {
+            if (imageBitmap == null)
+                return;
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "png (*.png)|*.png";
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                using (FileStream stream5 = new FileStream(saveFileDialog.FileName, FileMode.Create))
+                {
+                    PngBitmapEncoder encoder5 = new PngBitmapEncoder();
+                    encoder5.Frames.Add(BitmapFrame.Create(imageBitmap));
+                    encoder5.Save(stream5);
+                }
+            }
         }
 
         private async Task ApplyAsyncFunc()
@@ -348,50 +374,52 @@ namespace Lab3gk.ViewModel
                     double v = 0;
 
                     var col = Pixels[i, j];
-                    double r = (double)col.r / 255.0;
-                    double g = (double)col.g / 255.0;
-                    double b = (double)col.b / 255.0;
-                    
+                    double r = (double)(int)col.r / 255.0;
+                    double g = (double)(int)col.g / 255.0;
+                    double b = (double)(int)col.b / 255.0;
+
                     double Cmax = Math.Max(r, Math.Max(g, b));
                     double Cmin = Math.Min(Math.Min(r, g), b);
-                    double d = Cmax - Cmin;
 
-                    if (d == 0)
+                    double delta = Cmax - Cmin;
+
+                    if (delta == 0)
                     {
                         h = 0;
                     }
-                    else if(Cmax == r)
+                    else if (Cmax == r)
                     {
-                        h = ((g - b) / d % 6) * 60;
+                        h = 60 * (((g - b) / delta) % 6.0);
                     }
-                    else if(Cmax == g)
+                    else if (Cmax == g)
                     {
-                        h = ((b - r) / d + 6) * 60;
+                        h = 60 * (((b - r) / delta) + 2.0);
                     }
                     else if (Cmax == b)
                     {
-                        h = ((r - g) / d + 4) * 60;
+                        h = 60 * (((r - g) / delta) + 4.0);
                     }
 
-                    if (h < 0 || h > 255)
-                        h = h;
-
-                    h = h < 0 ? h + 360 : h;
-                    
-                    s = Cmax == 0 ? 0 : d / Cmax;
+                    s = Cmax == 0 ? 0 : delta / Cmax;
 
                     v = Cmax;
-                    s *= 100;
-                    v *= 100;
-                    //s *= 255;
-                    //v *= 255;
 
-                    h = h > 255 ? h / 255 : h;
-                    //h = h / 360 * 255;
+                    if (h < 0)
+                        h += 360;
+
+                    h = h / 360;
+
+                    h *= 255;
+                    s *= 255;
+                    v *= 255;
+
+                    if (h < 0 || h > 255 || s < 0 || s > 255 || v < 0 || v > 255)
+                        v = v;
 
                     Pixels1[i, j] = ((byte)(int)h, (byte)(int)h, (byte)(int)h);
                     Pixels2[i, j] = ((byte)(int)s, (byte)(int)s, (byte)(int)s);
                     Pixels3[i, j] = ((byte)(int)v, (byte)(int)v, (byte)(int)v);
+
                 }
             }
 

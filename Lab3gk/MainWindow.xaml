@@ -86,60 +86,127 @@
                         </DockPanel>
                         
                         <Label>Red primary</Label>
-                        <DockPanel>
-                            <Label>X: </Label>
-                            <TextBox Text="{Binding Path=RedX, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
-                            <Slider Value="{Binding RedX}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
-                        </DockPanel>
-                        <DockPanel>
-                            <Label>Y: </Label>
-                            <TextBox Text="{Binding Path=RedY, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
-                            <Slider Value="{Binding RedY}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
-                        </DockPanel>
-                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70"></ColumnDefinition>
+                                <ColumnDefinition Width="30"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="1">X:</Label>
+                            <TextBox Grid.Column="2" Text="{Binding Path=RedX, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
+                            <Slider Grid.Column="3" Value="{Binding RedX}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70"></ColumnDefinition>
+                                <ColumnDefinition Width="30"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="1">Y:</Label>
+                            <TextBox Grid.Column="2" Text="{Binding Path=RedY, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
+                            <Slider Grid.Column="3" Value="{Binding RedY}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
+                        </Grid>
+
                         <Label>Green primary</Label>
-                        <DockPanel>
-                            <Label>X: </Label>
-                            <TextBox Text="{Binding Path=GreenX, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
-                            <Slider Value="{Binding GreenX}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
-                        </DockPanel>
-                        <DockPanel>
-                            <Label>Y: </Label>
-                            <TextBox Text="{Binding Path=GreenY, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
-                            <Slider Value="{Binding GreenY}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
-                        </DockPanel>
-                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70"></ColumnDefinition>
+                                <ColumnDefinition Width="30"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="1">X:</Label>
+                            <TextBox Grid.Column="2" Text="{Binding Path=GreenX, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
+                            <Slider Grid.Column="3" Value="{Binding GreenX}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70"></ColumnDefinition>
+                                <ColumnDefinition Width="30"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="1">Y:</Label>
+                            <TextBox Grid.Column="2" Text="{Binding Path=GreenY, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
+                            <Slider Grid.Column="3" Value="{Binding GreenY}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
+                        </Grid>
+
                         <Label>Blue primary</Label>
-                        <DockPanel>
-                            <Label>X: </Label>
-                            <TextBox Text="{Binding Path=BlueX, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
-                            <Slider Value="{Binding BlueX}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
-                        </DockPanel>
-                        <DockPanel>
-                            <Label>Y: </Label>
-                            <TextBox Text="{Binding Path=BlueY, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
-                            <Slider Value="{Binding BlueY}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
-                        </DockPanel>
-                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70"></ColumnDefinition>
+                                <ColumnDefinition Width="30"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="1">X:</Label>
+                            <TextBox Grid.Column="2" Text="{Binding Path=BlueX, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
+                            <Slider Grid.Column="3" Value="{Binding BlueX}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70"></ColumnDefinition>
+                                <ColumnDefinition Width="30"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="1">Y:</Label>
+                            <TextBox Grid.Column="2" Text="{Binding Path=BlueY, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
+                            <Slider Grid.Column="3" Value="{Binding BlueY}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
+                        </Grid>
+
                         <Label>White point</Label>
-                        <DockPanel>
-                            <Label>X: </Label>
-                            <TextBox Text="{Binding Path=WhiteX, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
-                            <Slider Value="{Binding WhiteX}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
-                        </DockPanel>
-                        <DockPanel>
-                            <Label>Y: </Label>
-                            <TextBox Text="{Binding Path=WhiteY, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
-                            <Slider Value="{Binding WhiteY}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
-                        </DockPanel>
-                        
-                        <DockPanel>
-                            <Label>Gamma: </Label>
-                            <TextBox Text="{Binding Path=Gamma, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
-                            <Slider Value="{Binding Gamma}" Minimum="0" Maximum="3" TickPlacement="BottomRight" TickFrequency="0.01" IsSnapToTickEnabled="True" />
-                        </DockPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70"></ColumnDefinition>
+                                <ColumnDefinition Width="30"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="1">X:</Label>
+                            <TextBox Grid.Column="2" Text="{Binding Path=WhiteX, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
+                            <Slider Grid.Column="3" Value="{Binding WhiteX}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70"></ColumnDefinition>
+                                <ColumnDefinition Width="30"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="1">Y:</Label>
+                            <TextBox Grid.Column="2" Text="{Binding Path=WhiteY, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
+                            <Slider Grid.Column="3" Value="{Binding WhiteY}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.001" IsSnapToTickEnabled="True" />
+                        </Grid>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70"></ColumnDefinition>
+                                <ColumnDefinition Width="30"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0">Gamma:</Label>
+                            <TextBox Grid.Column="2" Text="{Binding Path=Gamma, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" />
+                            <Slider Grid.Column="3" Value="{Binding Gamma}" Minimum="0" Maximum="1" TickPlacement="BottomRight" TickFrequency="0.01" IsSnapToTickEnabled="True" />
+
+                        </Grid>
                     </StackPanel>
                 </Border>
+                <DockPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Button Content="Save Image 1" Command="{Binding SaveImage1Command}" ></Button>
+                        <Button Grid.Column="1" Content="Save Image 2" Command="{Binding SaveImage2Command}" ></Button>
+                        <Button Grid.Column="2" Content="Save Image 3" Command="{Binding SaveImage3Command}" ></Button>
+                    </Grid>
+                </DockPanel>
             </StackPanel>
             
             

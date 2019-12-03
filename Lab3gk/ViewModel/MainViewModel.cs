@@ -14,12 +14,13 @@ using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 using Lab3gk.Helpers;
 
+
 namespace Lab3gk.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
         private WriteableBitmap _baseImage;
-        private WriteableBitmap _baseImage2;
+        private WriteableBitmap _BaseImage;
         private WriteableBitmap _image1;
         private WriteableBitmap _image2;
         private WriteableBitmap _image3;
@@ -47,7 +48,7 @@ namespace Lab3gk.ViewModel
             set { _predIlu = value; RaisePropertyChanged(nameof(PredIlu)); }
         }
 
-        public RelayCommand LoadBaseImage2Command { get; set; }
+        public RelayCommand LoadBaseImageCommand { get; set; }
         public RelayCommand ApplyCommand { get; set; }
         public AsyncCommand ApplyAsync { get; set; }
         public RelayCommand SelectionChangedColCommand { get; set; }
@@ -55,18 +56,19 @@ namespace Lab3gk.ViewModel
         public RelayCommand SaveImage1Command { get; set; }
         public RelayCommand SaveImage2Command { get; set; }
         public RelayCommand SaveImage3Command { get; set; }
+        public RelayCommand GenerateCommand { get; set; }
 
-        //public BitmapImage BaseImage2 { get; set; }
+        //public BitmapImage BaseImage { get; set; }
         public WriteableBitmap BaseImage
         {
             get { return _baseImage; }
             set { _baseImage = value; RaisePropertyChanged(nameof(BaseImage)); }
         }
-        public WriteableBitmap BaseImage2
-        {
-            get { return _baseImage2; }
-            set { _baseImage2 = value; RaisePropertyChanged(nameof(BaseImage2)); }
-        }
+        //public WriteableBitmap BaseImage
+        //{
+        //    get { return _BaseImage; }
+        //    set { _BaseImage = value; RaisePropertyChanged(nameof(BaseImage)); }
+        //}
 
         public WriteableBitmap Image1
         {
@@ -166,7 +168,7 @@ namespace Lab3gk.ViewModel
             Gamma = 2.2;
 
 
-            LoadBaseImage2Command = new RelayCommand(LoadBaseImage2);
+            LoadBaseImageCommand = new RelayCommand(LoadBaseImage);
             ApplyCommand = new RelayCommand(Apply);
             ApplyAsync = new AsyncCommand(ApplyAsyncFunc, () => !IsBusy);
             SelectionChangedColCommand = new RelayCommand(SelectionChangedCol);
@@ -174,6 +176,120 @@ namespace Lab3gk.ViewModel
             SaveImage1Command = new RelayCommand(() => SaveImage(Image1));
             SaveImage2Command = new RelayCommand(() => SaveImage(Image2));
             SaveImage3Command = new RelayCommand(() => SaveImage(Image3));
+            GenerateCommand = new RelayCommand(GenerateImage);
+        }
+
+        private void GenerateImage()
+        {
+            var size = 600;
+
+            var GenPixels = new (byte r, byte g, byte b)[size,size];
+            BaseImage = new WriteableBitmap(size, size, 96, 96, PixelFormats.Bgr32, null);
+            Image1 = new WriteableBitmap(size, size, 96, 96, PixelFormats.Bgr32, null);
+            Image2 = new WriteableBitmap(size, size, 96, 96, PixelFormats.Bgr32, null);
+            Image3 = new WriteableBitmap(size, size, 96, 96, PixelFormats.Bgr32, null);
+
+            int half = size / 2;
+            int quarter = size / 4;
+
+            BaseImage.FillPolygon(new int[] { 0, 0, quarter, 0, quarter, quarter, 0, 0 }, Color.FromRgb((byte)255, (byte)255, (byte)255));
+            BaseImage.FillPolygon(new int[] { quarter, 0, half, 0, quarter, quarter, quarter, 0 }, Color.FromRgb((byte)255, (byte)0, (byte)0));
+            BaseImage.FillPolygon(new int[] { half, 0, half, quarter, quarter, quarter, half, 0 }, Color.FromRgb((byte)255, (byte)255, (byte)0));
+            BaseImage.FillPolygon(new int[] { half, quarter, half, half, quarter, quarter, half, quarter }, Color.FromRgb((byte)0, (byte)255, (byte)0));
+            BaseImage.FillPolygon(new int[] { quarter, half, half, half, quarter, quarter, quarter, half }, Color.FromRgb((byte)0, (byte)0, (byte)0));
+            BaseImage.FillPolygon(new int[] { quarter, half, 0, half, quarter, quarter, quarter, half }, Color.FromRgb((byte)255, (byte)0, (byte)255));
+            BaseImage.FillPolygon(new int[] { 0, half, 0, quarter, quarter, quarter, 0, half }, Color.FromRgb((byte)0, (byte)0, (byte)255));
+            BaseImage.FillPolygon(new int[] { 0, 0, 0, quarter, quarter, quarter, 0, 0 }, Color.FromRgb((byte)0, (byte)255, (byte)255));
+
+            unsafe
+            {
+                using (var context = BaseImage.GetBitmapContext(ReadWriteMode.ReadOnly))
+                {
+                    for (int i = 0; i < half; i++)
+                    {
+                        for (int j = 0; j < half; j++)
+                        {
+                            if (i * BaseImage.PixelHeight + j > context.Length - 1)
+                                break;
+                            var c = context.Pixels[i * BaseImage.PixelHeight + j];
+
+                            var a = (byte)(c >> 24);
+                            int ai = a;
+                            if (ai == 0)
+                            {
+                                ai = 1;
+                            }
+                            ai = ((255 << 8) / ai);
+                            GenPixels[i, j] = ((byte)((((c >> 16) & 0xFF) * ai) >> 8), (byte)((((c >> 8) & 0xFF) * ai) >> 8), (byte)((((c & 0xFF) * ai) >> 8)));
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < half; i++)
+            {
+                for (int j = 0; j < half; j++)
+                {
+                    byte grey = (byte)(int)((Math.Min(Math.Min(GenPixels[i, j].r, GenPixels[i, j].g), GenPixels[i, j].b) +
+                        Math.Max(Math.Max(GenPixels[i, j].r, GenPixels[i, j].g), GenPixels[i, j].b)) / 2);
+
+                    GenPixels[half + i, half + j] = ((byte)grey, (byte)grey, (byte)grey);
+                }
+            }
+
+            for (int i = 0; i < half; i++)
+            {
+                for (int j = 0; j < half; j++)
+                {
+                    byte grey = (byte)(((int)GenPixels[i, j].r + (int)GenPixels[i, j].g + (int)GenPixels[i, j].b) / 3);
+
+                    GenPixels[half + i, j] = (grey, grey, grey);
+                }
+            }
+
+            var kb = 0.114;
+            var kr = 0.299;
+
+            for (int i = 0; i < half; i++)
+            {
+                for (int j = 0; j < half; j++)
+                {
+                    byte y = (byte)(int)(((double)GenPixels[i, j].r * kr) + ((double)GenPixels[i, j].g * (1 - kr - kb)) + ((double)GenPixels[i, j].b * kb));
+
+                    GenPixels[i,half +  j] = (y, y, y);
+                }
+            }
+
+            Pixels2Bitmap(BaseImage, GenPixels);
+            Pixels2Bitmap(Image1, GenPixels);
+            Pixels2Bitmap(Image2, GenPixels);
+            Pixels2Bitmap(Image3, GenPixels);
+            Pixels = new (byte r, byte g, byte b)[BaseImage.PixelWidth, BaseImage.PixelHeight];
+
+            unsafe
+            {
+                using (var context = BaseImage.GetBitmapContext(ReadWriteMode.ReadOnly))
+                {
+                    for (int i = 0; i < BaseImage.PixelWidth; i++)
+                    {
+                        for (int j = 0; j < BaseImage.PixelHeight; j++)
+                        {
+                            if (i * BaseImage.PixelHeight + j > context.Length - 1)
+                                break;
+                            var c = context.Pixels[i * BaseImage.PixelHeight + j];
+
+                            var a = (byte)(c >> 24);
+                            int ai = a;
+                            if (ai == 0)
+                            {
+                                ai = 1;
+                            }
+                            ai = ((255 << 8) / ai);
+                            Pixels[i, j] = ((byte)((((c >> 16) & 0xFF) * ai) >> 8), (byte)((((c >> 8) & 0xFF) * ai) >> 8), (byte)((((c & 0xFF) * ai) >> 8)));
+                        }
+                    }
+                }
+            }
         }
 
         private void SaveImage(WriteableBitmap imageBitmap)
@@ -482,31 +598,31 @@ namespace Lab3gk.ViewModel
 
         }
 
-        private void LoadBaseImage2()
+        private void LoadBaseImage()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             {
                 Uri fileUri = new Uri(openFileDialog.FileName);
-                var BaseImage2xd = new BitmapImage(fileUri);
-                BaseImage2 = new WriteableBitmap(BaseImage2xd);
-                Image1 = new WriteableBitmap(BaseImage2xd);
-                Image2 = new WriteableBitmap(BaseImage2xd);
-                Image3 = new WriteableBitmap(BaseImage2xd);
+                var BaseImagexd = new BitmapImage(fileUri);
+                BaseImage = new WriteableBitmap(BaseImagexd);
+                Image1 = new WriteableBitmap(BaseImagexd);
+                Image2 = new WriteableBitmap(BaseImagexd);
+                Image3 = new WriteableBitmap(BaseImagexd);
 
-                Pixels = new (byte r, byte g, byte b)[BaseImage2.PixelWidth , BaseImage2.PixelHeight];
+                Pixels = new (byte r, byte g, byte b)[BaseImage.PixelWidth , BaseImage.PixelHeight];
 
                 unsafe
                 {
-                    using (var context = BaseImage2.GetBitmapContext(ReadWriteMode.ReadOnly))
+                    using (var context = BaseImage.GetBitmapContext(ReadWriteMode.ReadOnly))
                     {
-                        for (int i = 0; i < BaseImage2.PixelWidth; i++)
+                        for (int i = 0; i < BaseImage.PixelWidth; i++)
                         {
-                            for(int j = 0; j < BaseImage2.PixelHeight; j++)
+                            for(int j = 0; j < BaseImage.PixelHeight; j++)
                             {
-                                if (i * BaseImage2.PixelHeight + j > context.Length - 1)
+                                if (i * BaseImage.PixelHeight + j > context.Length - 1)
                                     break;
-                                var c = context.Pixels[i * BaseImage2.PixelHeight + j];
+                                var c = context.Pixels[i * BaseImage.PixelHeight + j];
                                 
                                 var a = (byte)(c >> 24);
                                 int ai = a;
